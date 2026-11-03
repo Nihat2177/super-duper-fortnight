@@ -1,0 +1,185 @@
+---
+title: Multi Factor Authentication in PnP Flutter SDK
+sidebar_label: Multi Factor Authentication
+displayed_sidebar: sdk
+description: "Web3Auth PnP Flutter SDK - Multi Factor Authentication | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+At Web3Auth, we prioritize your security by offering Multi-Factor Authentication (MFA). MFA is an extra layer of protection that verifies your
+identity when accessing your account. To ensure ownership, you must provide two or more different backup factors. You have the option to choose from
+the device, social, backup factor (seed phrase), and password factors to guarantee access to your Web3 account. Once you create a recovery factor, MFA
+is enabled, and your keys are divided into three shares for off-chain multi-sig, making the key self-custodial. With backup factors, you can easily
+recover your account if you lose access to your original device or helps login into a new device.
+
+:::note
+
+This is a paid feature and the the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the
+**Growth Plan**. You can use this feature in the development environment for free.
+
+:::
+
+## Using the `mfaLevel` to enable MFA
+
+For a dApp, we provide various options to set up Multi-Factor Authentication. You can customize the MFA screen by setting the `mfaLevel` argument. You
+can enable or disable a backup factor and change their order. Currently, there are four values for `mfaLevel`:
+
+- `default`: presents the MFA screen every third login
+- `optional`: presents the MFA screen on every login, but you can skip it
+- `mandatory`: make it mandatory to set up MFA after login
+- `none`: skips the MFA setup screen
+
+```dart
+Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.google,
+      // highlight-next-line
+      mfaLevel: MFALevel.MANDATORY,
+));
+```
+
+```dart title="Usage"
+Future<void> initPlatformState() async {
+  HashMap themeMap = HashMap<String, String>();
+  themeMap['primary'] = "#229954";
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.testnet,
+    redirectUrl: redirectUrl,
+    whiteLabel: WhiteLabelData(
+      appName: "Web3Auth Flutter App",
+      logoLight:
+          "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+      logoDark:
+          "https://cdn.icon-icons.com/icons2/2389/PNG/512/flutter_logo_icon_145273.png",
+      defaultLanguage: Language.en,
+      mode: ThemeModes.auto,
+      appUrl: "https://web3auth.io",
+      useLogoLoader: true,
+      theme: themeMap)
+    ));
+}
+
+final Web3AuthResponse response = await Web3AuthFlutter.login(LoginParams(
+      loginProvider: Provider.google,
+      // highlight-next-line
+      mfaLevel: MFALevel.MANDATORY,
+));
+```
+
+## Using the `mfaSettings` to configure MFA Order
+
+You can configure the order of MFA or enable/disable MFA type by passing the `mfaSettings` object in `Web3AuthOptions`.
+
+`MfaSettings`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Class", value: "class" },
+  ]}
+>
+
+<TabItem value="table">
+
+`deviceShareFactor` | `backUpShareFactor` | `socialBackupFactor` | `passwordFactor`
+
+| Parameter   | Type   | Mandatory | Description            |
+| ----------- | ------ | --------- | ---------------------- |
+| `enable`    | `bool` | Yes       | Enable/Disable MFA     |
+| `priority`  | `int`  | No        | Priority of MFA        |
+| `mandatory` | `bool` | No        | Mandatory/Optional MFA |
+
+</TabItem>
+
+<TabItem value="class">
+
+```dart
+class MfaSetting {
+  final bool enable;
+  final int? priority;
+  final bool? mandatory;
+
+  MfaSetting({required this.enable, this.priority, this.mandatory});
+
+  Map<String, dynamic> toJson() {
+    return {'enable': enable, 'priority': priority, 'mandatory': mandatory};
+  }
+}
+
+class MfaSettings {
+  final MfaSetting? deviceShareFactor;
+  final MfaSetting? backUpShareFactor;
+  final MfaSetting? socialBackupFactor;
+  final MfaSetting? passwordFactor;
+
+  MfaSettings(
+      {this.deviceShareFactor,
+      this.backUpShareFactor,
+      this.socialBackupFactor,
+      this.passwordFactor});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'deviceShareFactor': deviceShareFactor,
+      'backUpShareFactor': backUpShareFactor,
+      'socialBackupFactor': socialBackupFactor,
+      'passwordFactor': passwordFactor
+    };
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+```dart
+Future<void> initPlatformState() async {
+
+  Uri redirectUrl;
+  if (Platform.isAndroid) {
+    redirectUrl = Uri.parse('{SCHEME}://{HOST}/auth');
+    // w3a://com.example.w3aflutter/auth
+  } else if (Platform.isIOS) {
+    redirectUrl = Uri.parse('{bundleId}://auth');
+    // com.example.w3aflutter://openlogin
+  } else {
+    throw UnKnownException('Unknown platform');
+  }
+
+
+  await Web3AuthFlutter.init(Web3AuthOptions(
+    clientId: "WEB3AUTH_CLIENT_ID",
+    network: Network.sapphire_mainnet,
+    redirectUrl: redirectUrl,
+    // highlight-start
+    mfaSettings: MfaSettings(
+      deviceShareFactor:
+          MfaSetting(enable: true, priority: 4, mandatory: false),
+      backUpShareFactor:
+          MfaSetting(enable: true, priority: 2, mandatory: true),
+      socialBackupFactor:
+          MfaSetting(enable: true, priority: 3, mandatory: false),
+      passwordFactor:
+          MfaSetting(enable: true, priority: 1, mandatory: true)
+    ));
+   // highlight-end
+  await Web3AuthFlutter.initialize();
+}
+
+```

@@ -1,0 +1,49 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+### `connectTo()`
+
+To log a user in the Web3Auth Plug and Play No Modal SDK, you need to call the `connectTo()` function. This function helps you customize the login
+process according to your own needs, by taking the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Function Definition", value: "definition" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Variable      | Type                  | Description                                             | Mandatory |
+| ------------- | --------------------- | ------------------------------------------------------- | --------- |
+| `walletName`  | `WALLET_ADAPTER_TYPE` | Wallet Adapter you want to use for logging in your user | Yes       |
+| `loginParams` | `object`              | Login Parameters specific to your wallet adapter        | No        |
+
+</TabItem>
+
+<TabItem value="definition">
+
+```tsx
+  connectTo<T>(walletName: WALLET_ADAPTER_TYPE, loginParams?: T): Promise<IProvider | null>;
+```
+
+```tsx
+export type WALLET_ADAPTER_TYPE = typeof WALLET_ADAPTERS[keyof typeof WALLET_ADAPTERS];
+export declare const WALLET_ADAPTERS: {
+  OPENLOGIN: string;
+  WALLET_CONNECT_V2: string;
+  TORUS_SOLANA: string;
+  PHANTOM: string;
+  SOLFLARE: string;
+  SLOPE: string;
+  TORUS_EVM: string;
+  METAMASK: string;
+  COINBASE: string;
+};
+```
+
+</TabItem>
+
+</Tabs>
