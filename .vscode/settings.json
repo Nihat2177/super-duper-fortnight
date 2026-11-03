@@ -1,0 +1,51 @@
+{
+  // Code style
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.formatOnSave": true,
+
+  // Misc
+  "javascript.suggestionActions.enabled": false,
+  "cSpell.words": [
+    "Avenir",
+    "browserslist",
+    "clsx",
+    "customauth",
+    "hoverable",
+    "jitpack",
+    "Metamask's",
+    "metastring",
+    "nodir",
+    "openlogin",
+    "palenight",
+    "passwordless",
+    "solana",
+    "tkey",
+    "Torus's",
+    "toruslabs",
+    "torusresearch",
+    "Usecase",
+    "Vercel",
+    "whitelabel"
+  ],
+  "editor.formatOnSave": true,
+  "eslint.options": {
+    "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+  },
+  "eslint.validate": [
+    "markdown",
+    "mdx",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "[mdx]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  }
+}
