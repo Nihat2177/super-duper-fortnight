@@ -1,0 +1,120 @@
+---
+title: Discord Social Login with Web3Auth
+sidebar_label: Discord
+
+displayed_sidebar: docs
+description: "Discord Social Login with Web3Auth | Documentation - Web3Auth"
+---
+
+---
+
+:::info
+
+**[Using Discord with Web3Auth Guide](/guides/discord)**
+
+:::
+
+## Create a Discord app
+
+1. Create a Discord [API application](https://discord.com/developers/applications).
+
+2. Navigate to **OAuth2** from the sidebar, and paste the following as Redirect URI into the "Redirect URI" field.
+
+   - https://beta.openlogin.com/auth (for Web3Auth testnet used in demo applications)
+
+   - https://app.openlogin.com/auth (for Web3Auth mainnet used in production applications)
+
+   ![Discord OAuth2.0 App Dashboard](/contents/social-providers/discord/discord-redirect-uri.png)
+
+3. Don't forget to save your changes!
+
+4. Next, obtain the **"Client ID"** from here. We will use this in our Web3Auth Dashboard.
+
+   ![Discord OAuth2.0 App Client ID and Secret](/contents/social-providers/discord/discord-clientid-secret.png)
+
+## Set up Discord Custom Authentication
+
+---
+
+1. Create a verifier for your Discord application by selecting `Discord` as the Login provider from this modal.
+   ![Login Providers list on Web3Auth Dashboard](/dashboard/verifiers/login-providers-list.png)
+2. Paste the **Client ID** from the Discord App(above) to the `Client ID` field and click on Create.
+   ![Discord Client ID on Web3Auth Dashboard](/dashboard/verifiers/discord-verifier.png)
+
+## Example
+
+---
+
+```js
+import { Web3Auth } from "@web3auth/modal";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const clientId = "YOUR_WEB3AUTH_CLIENT_ID";
+// get it from https://dashboard.web3auth.io by creating a Plug n Play project.
+
+const web3auth = new Web3Auth({
+  clientId,
+  chainConfig: {
+    chainNamespace: "eip155",
+    chainId: "0x1",
+  },
+});
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    network: "cyan",
+    uxMode: "popup",
+    loginConfig: {
+      // Discord login
+      discord: {
+        name: "Custom Auth Login",
+        verifier: "YOUR_DISCORD_VERIFIER_NAME", // Pass the Verifier name here
+        typeOfLogin: "discord", // Pass on the login provider of the verifier you've created
+        clientId: "DISCORD_CLIENT_ID_1234567890", // Pass on the Discord `Client ID` here
+      },
+    },
+  },
+});
+web3auth.configureAdapter(openloginAdapter);
+
+// Initialize Modal
+await web3auth.initModal();
+
+// Login with Discord
+await web3auth.connect();
+```
+
+## Troubleshoot
+
+---
+
+### Duplicate token found
+
+:::caution
+
+Receiving `Could not get result from torus nodes Duplicate token found` error when using Custom verifier for Discord?
+
+- This is because Discord issues the same token for 30 mins.
+- We revoke it for you for default verifiers( such as when using Web3Auth Modal `@webauth/web3auth`).
+- But when using Custom Verifier for Discord, the integrating dApps have to revoke the token themself before attempting the next login by using
+  discord clientId and secret to revoke the token.
+
+:::
+
+Here's the sample code to revoke the token:
+
+```js
+const axios = require("axios").default;
+const FormData = require("form-data");
+
+const { DISCORD_CLIENT_SECRET, DISCORD_CLIENT_ID } = process.env;
+const { token } = req.body;
+const formData = new FormData();
+formData.append("token", token);
+await axios.post("https://discord.com/api/oauth2/token/revoke", formData, {
+  headers: {
+    ...formData.getHeaders(),
+    Authorization: `Basic ${Buffer.from(`${DISCORD_CLIENT_ID}:${DISCORD_CLIENT_SECRET}`, "binary").toString("base64")}`,
+  },
+});
+```
