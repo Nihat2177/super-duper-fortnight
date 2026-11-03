@@ -1,0 +1,77 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="web3"
+  values={[
+    { label: "web3.js", value: "web3" },
+    { label: "ethers.js", value: "ethers" },
+  ]}
+>
+<TabItem value="web3">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// web3 is const web3 = new Web3(web3authProvider); from above.
+
+const contractABI = [
+  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+    name: "update",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+const contract = new web3.eth.Contract(JSON.parse(JSON.stringify(contractABI)), contractAddress);
+
+// Write message to smart contract
+// @ts-ignore
+const receipt = await contract.methods.update("W3A").send({
+  from: (await web3.eth.getAccounts())[0],
+  maxFeePerGas: "300",
+  maxPriorityFeePerGas: "10",
+});
+```
+
+</TabItem>
+<TabItem value="ethers">
+
+```tsx
+/*
+  Use code from the above Initializing Provider here
+*/
+
+// provider is const provider = new ethers.providers.Web3Provider(web3authProvider); from above.
+
+const signer = provider.getSigner();
+
+const contractABI = [
+  { inputs: [{ internalType: "string", name: "initMessage", type: "string" }], stateMutability: "nonpayable", type: "constructor" },
+  { inputs: [], name: "message", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+  {
+    inputs: [{ internalType: "string", name: "newMessage", type: "string" }],
+    name: "update",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+const contractAddress = "0x04cA407965D60C2B39d892a1DFB1d1d9C30d0334";
+const contract = new ethers.Contract(contractAddress, JSON.parse(JSON.stringify(contractABI)), signer);
+
+// Send transaction to smart contract to update message
+const tx = await contract.update("NEW_MESSAGE");
+
+// Wait for transaction to finish
+const receipt = await tx.wait();
+```
+
+</TabItem>
+</Tabs>

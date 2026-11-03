@@ -1,0 +1,86 @@
+---
+title: Whitelabel PnP Android SDK
+sidebar_label: Whitelabel
+displayed_sidebar: sdk
+description: "Web3Auth PnP Android SDK - Whitelabel | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+`whiteLabel`
+
+For defining custom UI, branding, and translations for your brand app, you just need to specify an additional parameter within the `Web3AuthOptions`
+Object called `whiteLabel`. This parameter takes another object called `WhiteLabelData`.
+
+### Arguments
+
+`WhiteLabelData`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type               | Mandatory | Description                             |
+| ----------------- | ------------------ | --------- | --------------------------------------- |
+| `appName`         | `String`           | No        | Name of your application                |
+| `appUrl`          | `String`           | No        | Url of your application                 |
+| `logoLight`       | `String`           | No        | Light logo for dark background          |
+| `logoDark`        | `String`           | No        | Dark logo for light background          |
+| `defaultLanguage` | `String`           | No        | Default translation language to be used |
+| `mode`            | `Boolean`          | No        | 3 Theme modes of the application        |
+| `theme`           | `Map<String, Any>` | No        | Whitelabel theme                        |
+| `useLogoLoader`   | `Boolean`          | No        | Loads the logo when loading             |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class WhiteLabelData(
+    private var appName: String? = null,
+    private var appUrl: String? = null,
+    private var logoLight: String? = null,
+    private var logoDark: String? = null,
+    private var defaultLanguage: Language? = Language.EN,
+    private var mode: ThemeModes? = null,
+    private var useLogoLoader: Boolean? = false,
+    private var theme: HashMap<String, String>? = null
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+```kotlin title="Usage"
+web3Auth = Web3Auth (
+  Web3AuthOptions (
+    context = this,
+    clientId = getString (R.string.web3auth_project_id),
+    network = Network.MAINNET,
+    redirectUrl = Uri.parse ("{YOUR_APP_PACKAGE_NAME}://auth"),
+    // Optional whitelabel object
+    // highlight-start
+    whiteLabel = WhiteLabelData (
+      appName = "Web3Auth Sample App",
+      appUrl = null,
+      logoLight = null,
+      logoDark = null,
+      defaultLanguage = Language.EN, // EN, DE, JA, KO, ZH, ES, FR, PT, NL
+      ThemeModes = ThemeModes.DARK, // LIGHT, DARK, AUTO
+      useLogoLoader = true,
+      theme = hashMapOf (
+        "primary" to "#229954"
+      )
+    )
+    // highlight-end
+  )
+)
+```
