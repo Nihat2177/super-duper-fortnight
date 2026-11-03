@@ -1,0 +1,21 @@
+```javascript
+import OpenloginAdapter from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    clientId, //Optional - Provide only if you haven't provided it in the Web3Auth Instantiation Code
+    network: "testnet",
+    uxMode: "popup",
+    loginConfig: {
+      jwt: {
+        name: "Name of your choice",
+        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
+        typeOfLogin: "jwt",
+        clientId: "YOUR-CLIENTID-FROM-LOGIN-PROVIDER",
+      },
+    },
+  },
+});
+
+web3auth.configureAdapter(openloginAdapter);
+```

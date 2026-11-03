@@ -1,0 +1,135 @@
+---
+title: torus-solana-adapter
+
+displayed_sidebar: sdk
+description: "Web Adapters - Torus Solana | Documentation - Web3Auth"
+---
+
+# Torus Solana Adapter
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+---
+
+# [`@web3auth/torus-solana-adapter`](https://npmjs.com/package/@web3auth/torus-solana-adapter)
+
+Torus solana adapter allows to connect with torus wallet for solana blockchain. You can read more about torus wallet
+[here](https://docs.tor.us/solana-wallet/get-started).
+
+## Basic Details
+
+---
+
+#### Adapter Name: `torus-solana`
+
+#### Package Name: [`@web3auth/torus-solana-adapter`](https://npmjs.com/package/@web3auth/torus-solana-adapter)
+
+#### authMode: `DAPP`
+
+#### chainNamespace: `SOLANA`
+
+#### Default: `YES`
+
+## Installation
+
+---
+
+```bash npm2yarn
+npm install --save @web3auth/torus-solana-adapter
+```
+
+## Arguments
+
+---
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | type                                                                          |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `chainConfig`     | `CustomChainConfig`                                                           |
+| `adapterSettings` | [`TorusCtorArgs`](https://docs.tor.us/solana-wallet/sdk/class)                |
+| `loginSettings`   | [`LoginParams`](https://docs.tor.us/solana-wallet/sdk/class)                  |
+| `initParams`      | [`Omit<TorusParams, "network">`](https://docs.tor.us/solana-wallet/sdk/class) |
+| `clientId?`       | `string`                                                                      |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```ts
+// refer to https://docs.tor.us/solana-wallet/sdk/class to know more about interface field types
+interface SolanaWalletOptions {
+  adapterSettings?: TorusCtorArgs;
+  loginSettings?: LoginParams;
+  initParams?: Omit<TorusParams, "network">;
+  chainConfig?: CustomChainConfig;
+  clientId?: string;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+### Custom Chain Config
+
+#### `chainConfig`
+
+:::caution
+
+While you can pass your `chainConfig`, it is not required since you can directly pass it over to the `Web3Auth`/ `Web3AuthCore` configuration while
+instantiating it.
+
+Read more about it in their respective sections:
+
+- [`web3auth/modal`](/sdk/web/modal/initialize#adding-a-custom-chain-configuration)
+- [`web3auth/core`](/sdk/web/core/initialize#adding-a-custom-chain-configuration)
+
+:::
+
+:::warning
+
+If you do pass `chainConfig` in an Adapter, it overwrites the `chainConfig` passed over to the `Web3Auth`/ `Web3AuthCore` constructor.
+
+:::
+
+## Example
+
+---
+
+```ts
+import { SolanaWalletAdapter } from "@web3auth/torus-solana-adapter";
+const solanaWalletAdapter = new SolanaWalletAdapter({
+  adapterSettings: {
+    modalZIndex: 99999,
+  },
+  loginSettings: {
+    loginProvider: "google",
+  },
+  initParams: {
+    buildEnv: "testing",
+  },
+  chainConfig: {
+    chainNamespace: CHAIN_NAMESPACES.SOLANA,
+    rpcTarget: "https://api.testnet.solana.com",
+    blockExplorer: "https://explorer.solana.com",
+    chainId: "0x2", // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
+    displayName: "testnet",
+    ticker: "sol",
+    tickerName: "solana",
+  },
+  clientId: "YOUR_WEB3AUTH_CLIENT_ID",
+});
+
+// it will add/update  the torus-solana adapter in to web3auth class
+web3auth.configureAdapter(solanaWalletAdapter);
+```
