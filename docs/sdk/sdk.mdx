@@ -1,0 +1,84 @@
+---
+title: SDK Reference
+hide_table_of_contents: true
+displayed_sidebar: sdk
+image: "images/docs-meta-cards/sdk-reference-card.png"
+description: "SDK Reference | Documentation - Web3Auth"
+---
+
+import Tiles from "@theme/Tiles";
+
+export const PlugAndPlayGroupsData = [
+  {
+    name: "Web3Auth Plug and Play",
+    description: "The Plug and Play SDKs for Web3Auth, helping you get started with the integration in a matter of minutes.",
+    tiles: [
+      {
+        key: "web",
+        title: "Web SDKs",
+        icon: "logo-js.png",
+        path: "/sdk/web/",
+      },
+      {
+        key: "android",
+        title: "Android SDK",
+        icon: "logo-android.png",
+        path: "/sdk/android/",
+      },
+      {
+        key: "apple",
+        title: "iOS SDK",
+        icon: "logo-apple.png",
+        path: "/sdk/ios/",
+      },
+      {
+        key: "react-native",
+        title: "React Native SDK",
+        icon: "logo-react.png",
+        path: "/sdk/react-native/",
+      },
+      {
+        key: "flutter",
+        title: "Flutter SDK",
+        icon: "logo-flutter.png",
+        path: "/sdk/flutter/",
+      },
+      {
+        key: "unity",
+        title: "Unity SDK",
+        icon: "logo-unity.png",
+        path: "/sdk/unity/",
+      },
+    ],
+  },
+];
+
+export const CoreKitGroupsData = [
+  {
+    name: "Web3Auth Core Kit",
+    description: "The Core Kit tKey SDK for Web3Auth for a more customised integration within your own environment.",
+    tiles: [
+      {
+        key: "web",
+        title: "tKey JS SDK",
+        icon: "logo-js.png",
+        path: "/sdk/tkey/",
+      },
+      {
+        key: "web",
+        title: "Single Factor Auth SDK",
+        icon: "logo-js.png",
+        path: "/sdk/single-factor-auth/",
+      },
+      {
+        key: "node",
+        title: "Node SDK",
+        icon: "logo-nodejs.png",
+        path: "/sdk/node",
+      },
+    ],
+  },
+];
+
+<Tiles tileGroups={PlugAndPlayGroupsData} />
+<Tiles tileGroups={CoreKitGroupsData} />
