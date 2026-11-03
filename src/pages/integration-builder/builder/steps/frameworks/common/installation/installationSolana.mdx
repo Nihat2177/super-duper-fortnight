@@ -1,0 +1,40 @@
+---
+title: Install Solana Libraries
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Install Solana Integration libraries using either [npm](https://www.npmjs.com/package/@web3auth/solana-provider) or
+[yarn](https://yarnpkg.com/package/@web3auth/solana-provider):
+
+<Tabs
+  defaultValue="npm"
+  values={[
+    { label: "npm", value: "npm" },
+    { label: "yarn", value: "yarn" },
+  ]}
+>
+<TabItem value="npm">
+
+```shell
+npm install --save @solana/web3.js @web3auth/solana-provider
+```
+
+</TabItem>
+
+<TabItem value="yarn">
+
+```shell
+yarn add @solana/web3.js @web3auth/solana-provider
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip
+
+Add the file `solanaRPC.ts` to the project. This file contains the code to interact with the blockchain.
+
+:::
