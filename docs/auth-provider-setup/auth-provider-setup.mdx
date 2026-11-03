@@ -1,0 +1,44 @@
+---
+title: Auth Provider Setup
+image: "images/docs-meta-cards/documentation-card.png"
+displayed_sidebar: docs
+description: "Auth Provider Setup | Documentation - Web3Auth"
+---
+
+import BYOCustomJWTTiles from "@site/src/common/docs/_byo-custom-jwt-providers.mdx";
+import FederatedTiles from "@site/src/common/docs/_federated-providers.mdx";
+import SocialTiles from "@site/src/common/docs/_social-login-providers.mdx";
+
+Auth Provider setup refers to the capability of creating a **verifier**(_a way to do custom authentication_) with Web3Auth. By default, Web3Auth comes
+with a set of default verifiers that you can use out of the box.
+
+:::info Caveat with Default Verifiers
+
+- **Migration from Default Verifiers to Custom Verifiers is not possible.**
+- The default verifier is not suitable for all use cases. For example, if you are using a custom JWT provider, you will need to use the
+  [`Web3Auth Plug and Play No Modal SDK`](/sdk/pnp/web/no-modal/), since the Web3Auth Modal will only help you configure the social logins present
+  within the Modal UI.
+- **Aggregation of the default verifier is not possible.** For example, if you want to aggregate Google and Email Passwordless, or any two/more social
+  providers, you will need to create an Aggregate Verifier, which is not possible if you start with:
+  - a Default Verifier
+  - or, Social Login Providers
+  - or, Custom Providers
+
+:::
+
+## Supported Auth Providers
+
+### Social
+
+<SocialTiles />
+
+### Federated / Identity Providers
+
+<FederatedTiles />
+
+### Bring your own Custom Login Providers
+
+<BYOCustomJWTTiles />
+
+There are some nuances with certain login providers, so don't hesitate to get in touch with us on [Discord](https://discord.gg/web3auth) or simply
+post your query on the [Community Support Forum](https://web3auth.io/community/c/feature-request/14) and we will take care of things from there.

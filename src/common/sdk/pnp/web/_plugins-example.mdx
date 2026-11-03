@@ -1,0 +1,17 @@
+In this example, we're adding the `WalletServicesPlugin` with a very basic configuration.
+
+```javascript
+import { WalletServicesPlugin } from "@web3auth/wallet-services-plugin";
+
+const walletServicesPlugin = new WalletServicesPlugin();
+web3auth.addPlugin(walletServicesPlugin);
+
+// Show the wallet services plugin
+await walletServicesPlugin.showWalletUi();
+
+// Show the wallet connect scanner
+await walletServicesPlugin.showWalletConnectScanner();
+
+// Show the checkout
+await walletServicesPlugin.showCheckout();
+```
