@@ -1,0 +1,59 @@
+---
+title: Creating Verifier on Web3Auth Dashboard
+sidebar_label: Create Verifier
+description:
+  Creating Verifier on the Web3Auth Dashboard | Auth Provider Setup | Documentation - Web3Auth"
+image: "images/docs-meta-cards/documentation-card.png"
+---
+
+A verifier is essentially a configuration that contains information about the OAuth provider you've
+chosen for your application. It acts as a bridge between Web3Auth and the OAuth provider, enabling
+the Auth Network nodes to query and validate JWT tokens effectively.
+
+## Create Verifier
+
+The `Custom Authentication` tab of a project looks something like this:
+
+![Custom Authentication Dashboard](/images/dashboard/custom-authentication.png)
+
+Once you click on the `Create Verifier` button, you'll see a page similar to this:
+
+![Verifier Modal on Web3Auth Dashboard](/images/dashboard/create-verifier.png)
+
+Here, you can create a new verifier for your application by specifying the necessary details as per
+your OAuth provider / login details.
+
+To create a verifier, you need to input the following details:
+
+### Verifier identifier
+
+The name of your verifier. This is a unique identifier that will be used to reference this verifier.
+
+### Choose a Login Provider
+
+    Select the Login Provider and fill in the details as per the provider you've chosen.
+
+    Refer the below links to learn more about setting up the following authentication service providers:
+    1. [Social Login Providers](/auth-provider-setup/social-providers)
+    2. [Custom Providers](/auth-provider-setup/byo-jwt-provider)
+    3. [Aggregate Multiple Providers](/auth-provider-setup/aggregate-verifier)
+
+## Edit Verifier
+
+Click on the verifier or the three dots next to the verifier you wish to edit and click on
+`Edit Verifier` in the dropdown.
+
+![Verifier Options](/images/dashboard/edit-verifier.png)
+
+The `Edit Verifier` page will appear with previously filled information. Make the necessary changes
+and click on the `Update Verifier` button on the bottom.
+
+## Archive Verifier
+
+To archive a verifier from the existing list, click on the three dots next to the verifier you wish
+to archive, and then select "Archive Verifier" from the dropdown.
+
+When you archive a verifier, it will no longer be available for use in your application. However,
+you can always unarchive it later from the Archive page in the dashboard.
+
+![Verifier Options](/images/dashboard/archive-verifier.png)

@@ -1,0 +1,192 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+While initializing the Wallet Services plugin, you need to pass on the following parameters to the
+constructor:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter            | Description                                                                                                             |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `wsEmbedOpts?`       | Configuration options for Wallet Services. It accepts `Partial<CtorArgs>` as a value.                                   |
+| `walletInitOptions?` | Parameters to customize your Wallet Services UI within the application. It accepts `Partial<WsEmbedParams>` as a value. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```
+constructor(options?: {
+  wsEmbedOpts?: Partial<CtorArgs>;
+  walletInitOptions?: Partial<WsEmbedParams>;
+});
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `wsEmbedOpts`
+
+`wsEmbedOpts` is an optional parameter that allows you to pass in the configuration options for
+Wallet Services. It takes the `CtorArgs` object as input which contains the following parameters:
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+`CtorArgs`
+
+| Parameter          | Description                                                                  |
+| ------------------ | ---------------------------------------------------------------------------- |
+| `modalZIndex?`     | Z-index of the modal and iframe. Default value is 99999                      |
+| `web3AuthClientId` | Web3Auth Client ID in `string`.                                              |
+| `web3AuthNetwork`  | Web3auth network to be used. It accepts `OPENLOGIN_NETWORK_TYPE` as a value. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface CtorArgs {
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99999
+   */
+  modalZIndex?: number;
+  /**
+   * You can get your clientId/projectId by registering your
+   * dapp on {@link "https://dashboard.web3auth.io"| developer dashboard}
+   */
+  web3AuthClientId: string;
+  /**
+   * network specifies the web3auth network to be used.
+   */
+  web3AuthNetwork: OPENLOGIN_NETWORK_TYPE;
+}
+
+export type OPENLOGIN_NETWORK_TYPE = (typeof OPENLOGIN_NETWORK)[keyof typeof OPENLOGIN_NETWORK];
+export declare const OPENLOGIN_NETWORK: {
+  readonly MAINNET: "mainnet";
+  readonly TESTNET: "testnet";
+  readonly CYAN: "cyan";
+  readonly AQUA: "aqua";
+  readonly CELESTE: "celeste";
+  readonly SAPPHIRE_DEVNET: "sapphire_devnet";
+  readonly SAPPHIRE_MAINNET: "sapphire_mainnet";
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+#### `walletInitOptions`
+
+The `walletInitOptions` from Wallet Services is an optional parameter that allows you to customise
+your Wallet Services UI within the application. It takes the object `WsEmbedParams` as input which
+contains multiple parameters that allow you to customise the UI of the plugin.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+`WsEmbedParams`
+
+| Parameter      | Description                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------- |
+| `chainConfig?` | Chain config of the Blockchain to connect with. It accepts `EthereumProviderConfig`.          |
+| `whiteLabel?`  | White Label parameters to whitelisting the Wallet Services UI. It accepts `WhiteLabelParams`. |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface WsEmbedParams {
+  /**
+   * Chain to connect with
+   */
+  chainConfig?: EthereumProviderConfig;
+  /**
+   * Build Environment of WsEmbed.
+   *
+   * production uses https://wallet.web3auth.io,
+   *
+   * staging uses https://staging-wallet.web3auth.io,
+   *
+   * testing uses https://develop-wallet.web3auth.io (latest internal build)
+   *
+   * development uses http://localhost:4050 (expects wallet-services-frontend to be run locally),
+   *
+   * @defaultValue production
+   */
+  buildEnv?: WS_EMBED_BUILD_ENV_TYPE;
+  /**
+   * Enables or disables logging.
+   *
+   * Defaults to false in prod and true in other environments
+   */
+  enableLogging?: boolean;
+  /**
+   * url of widget to load
+   *
+   * Defaults to true
+   * @defaultValue true
+   */
+  walletUrls?: Partial<Record<WS_EMBED_BUILD_ENV_TYPE, WalletUrlConfig>>;
+  /**
+   * Determines how to show confirmation screens
+   *
+   * @defaultValue none for wallet services
+   * @defaultValue popup for safe-auth, mocaverse
+   */
+  /**
+   * Allows you to customize the look & feel of the widget
+   */
+  whiteLabel?: {
+    /**
+     * whether to show/hide ws-embed widget.
+     *
+     * Defaults to true
+     * @defaultValue true
+     */
+    showWidgetButton?: boolean;
+    /**
+     * Determines where the wsEmbed widget is visible on the page.
+     * @defaultValue bottom-left
+     */
+    buttonPosition?: BUTTON_POSITION_TYPE;
+    hideNftDisplay?: boolean;
+    hideTokenDisplay?: boolean;
+    hideTransfers?: boolean;
+    hideTopup?: boolean;
+    hideReceive?: boolean;
+    defaultPortfolio?: "token" | "nft";
+  } & WhiteLabelData;
+}
+```
+
+</TabItem>
+
+</Tabs>
