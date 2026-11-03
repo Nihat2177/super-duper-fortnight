@@ -1,0 +1,34 @@
+#### `configureAdapter(ADAPTER)`
+
+To configure an adapter, create the instance of the adapter by using its corresponding package and
+pass the returned `adapter` instance in the `configureAdapter` function.
+
+:::tip
+
+Refer to the [Adapters documentation](/sdk/pnp/web/adapters) to know more deeply about what adapters
+are available and how to configure them.
+
+:::
+
+#### Example
+
+If you want to configure the Default External Adapter for Solana
+
+- Import the `getDefaultExternalAdapters` from `@web3auth/default-solana-adapter` package
+- Get all the adapters in the `adapters` variable as an array of `IAdapter`.
+- Iterate over the `adapters` array and configure each adapter using `configureAdapter` function.
+
+```javascript
+import { getDefaultExternalAdapters } from "@web3auth/default-solana-adapter"; // All default Solana Adapters
+
+// Setup external adapters
+const adapters = await getDefaultExternalAdapters({
+  options: {
+    clientId,
+    chainConfig,
+  },
+});
+adapters.forEach((adapter) => {
+  web3auth.configureAdapter(adapter);
+});
+```

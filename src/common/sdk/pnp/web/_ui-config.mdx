@@ -1,0 +1,69 @@
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter              | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `loginMethodsOrder`    | order of how login methods are shown                  |
+| `modalZIndex`          | Z-index of the modal and iframe                       |
+| `displayErrorsOnModal` | Whether to show errors on Web3Auth modal.             |
+| `loginGridCol`         | number of columns to display the Social Login buttons |
+| `primaryButton`        | Decides which button will be the focus of the modal   |
+| `uxMode`               | UX Mode for the openlogin adapter                     |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```tsx
+export interface UIConfig extends WhiteLabelData {
+  /**
+   * order of how login methods are shown
+   *
+   * @defaultValue `["google", "facebook", "twitter", "reddit", "discord", "twitch", "apple", "line", "github", "kakao", "linkedin", "weibo", "wechat", "email_passwordless"]`
+   */
+  loginMethodsOrder?: string[];
+  /**
+   * Z-index of the modal and iframe
+   * @defaultValue 99998
+   */
+  modalZIndex?: string;
+  /**
+   * Whether to show errors on Web3Auth modal.
+   *
+   * @defaultValue `true`
+   */
+  displayErrorsOnModal?: boolean;
+  /**
+   * number of columns to display the Social Login buttons
+   *
+   * @defaultValue `3`
+   */
+  loginGridCol?: 2 | 3;
+  /**
+   * Decides which button will be the focus of the modal
+   * For `socialLogin` the social icon will be colored
+   * For other options like `emailLogin` and `externalLogin` the respective buttons will be coverted into a primary button
+   *
+   * @defaultValue `socialLogin`
+   */
+  primaryButton?: "externalLogin" | "socialLogin" | "emailLogin";
+  /**
+   * UX Mode for the openlogin adapter
+   */
+  uxMode?: UX_MODE_TYPE;
+}
+```
+
+</TabItem>
+
+</Tabs>
