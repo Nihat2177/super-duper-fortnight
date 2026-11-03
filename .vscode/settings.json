@@ -1,0 +1,66 @@
+{
+  // Code style
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // "editor.formatOnSave": true,
+  // Misc
+  "javascript.suggestionActions.enabled": false,
+  "cSpell.words": [
+    "Avenir",
+    "browserslist",
+    "clsx",
+    "customauth",
+    "hoverable",
+    "jitpack",
+    "Metamask's",
+    "metastring",
+    "nodir",
+    "openlogin",
+    "palenight",
+    "passwordless",
+    "solana",
+    "tkey",
+    "Torus's",
+    "toruslabs",
+    "torusresearch",
+    "Usecase",
+    "Vercel",
+    "whitelabel"
+  ],
+  "editor.formatOnSave": true,
+  "eslint.options": {
+    "extensions": [
+      ".js",
+      ".jsx",
+      ".md",
+      ".mdx",
+      ".ts",
+      ".tsx"
+    ]
+  },
+  "eslint.validate": [
+    "markdown",
+    "mdx",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "[mdx]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
