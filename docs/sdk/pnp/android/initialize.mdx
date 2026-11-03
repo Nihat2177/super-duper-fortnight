@@ -1,0 +1,192 @@
+---
+title: Initializing PnP Android SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth PnP Android SDK - Initialize | Documentation - Web3Auth"
+---
+
+import Initialization from "@site/src/common/sdk/pnp/android/_initialize.mdx";
+import SetResultUrl from "@site/src/common/sdk/pnp/android/_set-result-url.mdx";
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+After installation, the next step to use Web3Auth is to initialize the SDK.
+
+However, Initialization is a two-step process:
+
+1. [Creating a Web3Auth Instance](#create-web3auth-instance)
+2. [Setting a Result URL](#set-result-url)
+
+Please note that these are the most critical steps where you must pass on different parameters
+according to the preference of your project. Additionally, You must configure Whitelabeling and
+Custom Authentication within this step if you wish to customize your Web3Auth Instance.
+
+## Create Web3Auth Instance
+
+In your activity, create a `Web3Auth` instance with your Web3Auth project's configurations.
+
+```kotlin
+web3Auth = Web3Auth(Web3AuthOptions)
+```
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+The Web3Auth Constructor takes an object with `Web3AuthOptions` as input.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Description                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `context`         | Android context to launch Web-based authentication, usually is the current activity. It's a mandatory field, and accepts `android.content.Context` as a value.      |
+| `clientId`        | Your Web3Auth Client ID. You can get it from Web3Auth [Dashboard](https://dashboard.web3auth.io/) under project details. It's a mandatory field of type `String`    |
+| `network`         | Defines the Web3Auth network. It's a mandatory field of type Network.                                                                                               |
+| `redirectUrl`     | URL that Web3Auth will redirect API responses upon successful authentication from browser. It's a mandatory field of type `Uri`.                                    |
+| `whiteLabel?`     | WhiteLabel options for web3auth. It helps you define custom UI, branding, and translations for your brand app. It takes `WhiteLabelData` as a value.                |
+| `loginConfig?`    | Login config for the custom verifiers. It takes `HashMap<String, LoginConfigItem>` as a value.                                                                      |
+| `useCoreKitKey?`  | Use CoreKit Key to get core kit key. It's an optional field with default value as `false`.                                                                          |
+| `chainNamespace?` | Chain Namespace [`EIP155` and `SOLANA`]. It takes `ChainNamespace` as a value.                                                                                      |
+| `mfaSettings?`    | Allows developers to configure the Mfa settings for authentication. It takes `MfaSettings` as a value.                                                              |
+| `sessionTime?`    | It allows developers to configure the session management time. Session Time is in seconds, default is 86400 seconds which is 1 day. `sessionTime` can be max 7 days |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```kotlin
+data class Web3AuthOptions(
+    var context: Context,
+    val clientId: String,
+    val network: Network,
+    var buildEnv: BuildEnv? = BuildEnv.PRODUCTION,
+    @Transient var redirectUrl: Uri,
+    var sdkUrl: String = getSdkUrl(buildEnv),
+    val whiteLabel: WhiteLabelData? = null,
+    val loginConfig: HashMap<String, LoginConfigItem>? = null,
+    val useCoreKitKey: Boolean? = false,
+    val chainNamespace: ChainNamespace? = ChainNamespace.EIP155,
+    val mfaSettings: MfaSettings? = null,
+    val sessionTime: Int? = 86400
+)
+```
+
+</TabItem>
+
+</Tabs>
+
+### Instance
+
+<Initialization />
+
+### Session Management
+
+The Session Management feature allows you to check the existing sessions with Web3Auth. The
+`sessionResponse()` will allow users to remain authenticated with Web3Auth for up to 1 day default,
+or a maximum of 7 days, or until they logout or session data is cleared. To change the default
+session time, you can pass `sessionTime` in `Web3AuthOptions`.
+
+```kotlin
+// Call sessionResponse() in onCreate() to check for any existing session.
+val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
+sessionResponse.whenComplete { _, error ->
+    if (error == null) {
+          Log.d("MainActivity_Web3Auth", "User already logged in")
+          // Add your logic
+    } else {
+        Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+        // Ideally, you should initiate the login function here.
+    }
+}
+```
+
+:::note
+
+If you're looking for `refreshToken` to maintain the JWT session, use this method instead to extend
+the session.
+
+:::
+
+## Set Result URL
+
+<SetResultUrl />
+
+## Example
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+  // ...
+  private lateinit var web3Auth: Web3Auth
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    web3Auth = Web3Auth(
+      Web3AuthOptions(context = this,
+        clientId = getString(R.string.web3auth_project_id),
+        network = Network.MAINNET,
+        redirectUrl = Uri.parse("{YOUR_APP_PACKAGE_NAME}://auth")
+      )
+    )
+
+    // Handle user signing in when app is not alive
+    web3Auth.setResultUrl(intent?.data)
+
+    // Calls sessionResponse() to check for any existing session.
+    val sessionResponse: CompletableFuture<Void> = web3Auth.initialize()
+    sessionResponse.whenComplete { _, error ->
+        if (error == null) {
+            Log.d("MainActivity_Web3Auth", "User already logged in")
+          // Add your logic
+        } else {
+            Log.d("MainActivity_Web3Auth", error.message ?: "Something went wrong")
+            // Ideally, you should initiate the login function here.
+        }
+    }
+
+    // Setup UI and event handlers
+    val signInButton = findViewById<Button>(R.id.signInButton)
+    signInButton.setOnClickListener { signIn() }
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+
+    // Handle user signing in when app is active
+    web3Auth.setResultUrl(intent?.data)
+  }
+
+  private fun signIn() {
+    val selectedLoginProvider = Provider.GOOGLE   // Can be GOOGLE, FACEBOOK, TWITCH etc.
+    val loginCompletableFuture: CompletableFuture<Web3AuthResponse> =
+            web3Auth.login(LoginParams(selectedLoginProvider))
+
+    loginCompletableFuture.whenComplete { loginResponse, error ->
+      if (error == null) {
+        // render logged in UI
+        println(loginResponse)
+      } else {
+        // render error UI
+      }
+    }
+  }
+  //...
+}
+```
+
+:::tip sample app
+
+Get started with a
+[sample application found here](/examples?product=Plug+and+Play&sdk=Plug+and+Play+Android+SDK).
+
+:::
