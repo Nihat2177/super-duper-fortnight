@@ -1,0 +1,10 @@
+# Production
+/build
+
+# Generated files
+.docusaurus
+.cache-loader
+
+# Misc
+/files
+.integrationBuilderCache
