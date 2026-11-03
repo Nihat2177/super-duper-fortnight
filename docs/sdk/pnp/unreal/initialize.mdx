@@ -1,0 +1,125 @@
+---
+title: Initializing PnP Unreal Engine SDK
+sidebar_label: Initialize
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unreal Engine SDK - Initialize | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+import unrealInitialization from "@site/static/guides/sdk/unreal/unreal-w3a-init.png";
+import unrealExample from "@site/static/guides/sdk/unreal/unreal-usage.png";
+
+After Installation, the next step to using Web3Auth is to Initialize the SDK. However, In Unreal, the Initialization happens through the blueprint.
+
+## Web3Auth Initialization Blueprint
+
+<img src={unrealInitialization} style={{ alignSelf: "center", maxWidth: "100%" }} alt="web3auth unreal initialization" />
+
+### Arguments
+
+#### `Web3AuthOptions`
+
+The Web3Auth Constructor takes a class `Web3AuthOptions` as input. This class has the following arguments.
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter        | Type                              | Mandatory | Description                                                                                                                                |
+| ---------------- | --------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `clientId`       | `string`                          | Yes       | The Client ID of your Web3Auth Application.                                                                                                |
+| `redirectUrl`    | `string`                          | Yes       | The Redirect URL of your Web3Auth Application.                                                                                             |
+| `network`        | `FNetwork`                        | No        | The Network of your Web3Auth Application. Defaults to `FNetwork::Mainnet`. MAINNET, TESTNET, CYAN, AQUA, SAPPHIRE_DEVNET, SAPPHIRE_MAINNET |
+| `whiteLabel`     | `FWhiteLabelData`                 | No        | The White Label Data of your Web3Auth Application.                                                                                         |
+| `loginConfig`    | `TMap<FString, FLoginConfigItem>` | No        | The Login Config of your Web3Auth Application.                                                                                             |
+| `chainNamespace` | `FChainNamespace`                 | No        | The Chain Namespace of your Web3Auth Application.                                                                                          |
+| `useCoreKitKey`  | `bool`                            | No        | Whether to use CoreKit Key for authentication.                                                                                             |
+| `mfaSettings`    | `FMfaSettings`                    | No        | The MFA Settings of your Web3Auth Application.                                                                                             |
+| `sessionTime`    | `int`                             | No        | The Session Time of your Web3Auth Application.                                                                                             |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```c
+USTRUCT(BlueprintType)
+struct FWeb3AuthOptions
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString clientId;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString redirectUrl;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString sdkUrl = "https://sdk.openlogin.com";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FNetwork network;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FBuildEnv buildEnv;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FWhiteLabelData whiteLabel;
+
+	UPROPERTY(BlueprintReadWrite)
+		TMap<FString, FLoginConfigItem> loginConfig;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        FChainNamespace chainNamespace;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        bool useCoreKitKey;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    	FMfaSettings mfaSettings;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        int32 sessionTime = 86400;
+
+	FWeb3AuthOptions() {};
+
+	void operator= (const FWeb3AuthOptions& other) {
+		clientId = other.clientId;
+		redirectUrl = other.redirectUrl;
+		sdkUrl = other.sdkUrl;
+		network = other.network;
+		buildEnv = other.buildEnv;
+		whiteLabel = other.whiteLabel;
+		loginConfig = other.loginConfig;
+		chainNamespace = other.chainNamespace;
+        useCoreKitKey = other.useCoreKitKey;
+        mfaSettings = other.mfaSettings;
+        sessionTime = other.sessionTime;
+	}
+
+};
+
+UENUM(BlueprintType)
+enum class FNetwork : uint8
+{
+	MAINNET = 0, TESTNET = 1, CYAN = 2, AQUA = 3, SAPPHIRE_DEVNET = 4, SAPPHIRE_MAINNET = 5
+};
+```
+
+</TabItem>
+
+</Tabs>
+
+## Usage
+
+The following is the graph to set Web3Auth actor configuration. The graph currently uses string values to add parameters to blueprint blocks, but you
+can connect the values coming from different UI components.
+
+<img src={unrealExample} style={{ alignSelf: "center", maxWidth: "100%" }} alt="unreal example blueprint" />

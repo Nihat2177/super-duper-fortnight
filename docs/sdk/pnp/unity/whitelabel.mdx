@@ -1,0 +1,96 @@
+---
+title: Whitelabel PnP Unity SDK
+sidebar_label: Whitelabel
+displayed_sidebar: sdk
+description: "Web3Auth PnP Unity SDK - Whitelabel | Documentation - Web3Auth"
+---
+
+import TabItem from "@theme/TabItem";
+import Tabs from "@theme/Tabs";
+
+For defining custom UI, branding, and translations for your brand app, you just need to specify an additional parameter within the `Web3AuthOptions`
+class called `whiteLabel`. This parameter takes another object called `WhiteLabelData`.
+
+:::note
+
+This is a paid feature and the minimum [pricing plan](https://web3auth.io/pricing.html) to use this SDK in a production environment is the **Growth
+Plan**. You can use this feature in the development environment for free.
+
+:::
+
+## Arguments
+
+### `WhiteLabelData`
+
+<Tabs
+  defaultValue="table"
+  values={[
+    { label: "Table", value: "table" },
+    { label: "Interface", value: "interface" },
+  ]}
+>
+
+<TabItem value="table">
+
+| Parameter         | Type                          | Mandatory | Description                                         |
+| ----------------- | ----------------------------- | --------- | --------------------------------------------------- |
+| `appName`         | `String`                      | No        | Name of your application                            |
+| `appUrl`          | `String`                      | No        | URL of your application                             |
+| `logoLight`       | `String`                      | No        | Light logo for dark background                      |
+| `logoDark`        | `String`                      | No        | Dark logo for light background                      |
+| `useLogoLoader`   | `Boolean`                     | No        | Use logo as loader, default is false.               |
+| `defaultLanguage` | `Web3Auth.Language?`          | No        | Translation language to be used, default is English |
+| `mode`            | `Web3Auth.ThemeModes?`        | No        | `light`, `dark` or `auto`. Defualt is `auto`        |
+| `theme`           | `Dictionary<string, string>?` | No        | Whitelabel theme                                    |
+
+</TabItem>
+
+<TabItem value="interface">
+
+```cs
+public class WhiteLabelData {
+  public string? appName { get; set; }
+  public string? logoLight { get; set; }
+  public string? logoDark { get; set; }
+  public Web3Auth.Language? defaultLanguage { get; set; } = Web3Auth.Language.en;
+  public Web3Auth.ThemeModes? mode { get; set; } = Web3Auth.ThemeModes.light;
+  public Dictionary<string, string>? theme { get; set; }
+  public string? appUrl { get; set; }
+  public bool? useLogoLoader { get; set; } = false;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+## Example
+
+```cs
+void Start()
+{
+  web3Auth = GetComponent<Web3Auth>();
+  web3Auth.setOptions(new Web3AuthOptions()
+  {
+    redirectUrl = new Uri("torusapp://com.torus.Web3AuthUnity/auth"),
+    clientId = "BAwFgL-r7wzQKmtcdiz2uHJKNZdK7gzEf2q-m55xfzSZOw8jLOyIi4AVvvzaEQO5nv2dFLEmf9LBkF8kaq3aErg",
+    network = Web3Auth.Network.TESTNET,
+    // highlight-start
+    whiteLabel = new WhiteLabelData() {
+      appName = "Web3Auth Sample App",
+      logoLight = null,
+      logoDark = null,
+      defaultLanguage = "en",
+      mode = "dark",
+      theme = new Dictionary < string, string > {
+        {
+          "primary",
+          "#d53f8c"
+        }
+      }
+    }
+    // highlight-end
+
+  });
+}
+```
