@@ -1,0 +1,18 @@
+```javascript
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+
+const openloginAdapter = new OpenloginAdapter({
+  adapterSettings: {
+    loginConfig: {
+      jwt: {
+        verifier: "YOUR-VERIFIER-NAME-ON-WEB3AUTH-DASHBOARD",
+        typeOfLogin: "jwt",
+        clientId: "YOUR-CLIENTID-FROM-LOGIN-PROVIDER",
+      },
+    },
+  },
+  privateKeyProvider,
+});
+
+web3auth.configureAdapter(openloginAdapter);
+```
